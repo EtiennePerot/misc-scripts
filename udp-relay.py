@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # Super simple script that listens to a local UDP port and relays all packets to an arbitrary remote host.
-# Packets that the host sent back will also be relayed to the local UDP client.
+# Packets that the host sends back will also be relayed to the local UDP client.
 # Works with Python 2 and 3
 
-import sys, socket, threading
+import sys, socket
 
 def fail(reason):
 	sys.stderr.write(reason + '\n')
