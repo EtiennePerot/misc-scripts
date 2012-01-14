@@ -10,7 +10,7 @@ def fail(reason):
 	sys.exit(1)
 
 if len(sys.argv) != 2 or len(sys.argv[1].split(':')) != 3:
-	fail('Usage: udp-relay localPort:remoteHost:remotePort')
+	fail('Usage: udp-relay.py localPort:remoteHost:remotePort')
 
 localPort, remoteHost, remotePort = sys.argv[1].split(':')
 
