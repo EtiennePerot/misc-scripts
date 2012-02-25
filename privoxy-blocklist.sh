@@ -34,6 +34,8 @@
 URLS=("https://easylist-downloads.adblockplus.org/liste_fr+easylist.txt" "https://easylist-downloads.adblockplus.org/easyprivacy.txt" "http://adversity.googlecode.com/hg/Antisocial.txt" "http://lian.info.tm/liste_fr.txt")
 # privoxy config dir (default: /etc/privoxy/)
 CONFDIR=/etc/privoxy
+# User-agent to use when downloading lists
+USERAGENT='Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:10.0.2) Gecko/20100101'
 # directory for temporary files
 TMPDIR=/tmp/privoxy-blocklist
 TMPNAME=$(basename ${0})
@@ -84,7 +86,7 @@ function main()
 	
 		# download list
 		debug "Downloading ${url} ..." 0
-		wget -t 3 --no-check-certificate -O ${file} ${url} >${TMPDIR}/wget-${url//\//#}.log 2>&1
+		wget -t 3 --no-check-certificate --user-agent="$USERAGENT" -O ${file} ${url} >${TMPDIR}/wget-${url//\//#}.log 2>&1
 		debug "$(cat ${TMPDIR}/wget-${url//\//#}.log)" 2
 		debug ".. downloading done." 0
 		[ "$(grep -E '^\[Adblock.*\]' ${file})" == "" ] && echo "The list recieved from ${url} isn't an AdblockPlus list. Skipped" && continue
