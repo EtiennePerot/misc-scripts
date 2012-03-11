@@ -19,7 +19,7 @@ try:
 except:
 	fail('Invalid port number: ' + str(localPort))
 try:
-	localPort = int(remotePort)
+	remotePort = int(remotePort)
 except:
 	fail('Invalid port number: ' + str(remotePort))
 
