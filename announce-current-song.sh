@@ -4,12 +4,14 @@ set -euxo pipefail
 
 lastTrack=''
 fifo='/tmp/announce-current-song.fifo.wav'
+rm -f "$fifo" || true
 mkfifo "$fifo"
 while true; do
 	sleep 10
 	# Get title and artist of currently-playing track.
 	meta="$(qdbus org.kde.amarok /Player org.freedesktop.MediaPlayer.GetMetadata || true)"
 	if ! echo "$meta" | grep -qP '^artist:'; then
+		lastTrack=''
 		continue # Most likely not playing audio right now.
 	fi
 	artist="$(echo "$meta" | grep -P '^artist:' | cut -d' ' -f2-)"
@@ -32,4 +34,5 @@ while true; do
 		qdbus org.kde.amarok /Player VolumeSet "$i"
 		sleep 0.075
 	done
+	lastTrack="$currentTrack"
 done
