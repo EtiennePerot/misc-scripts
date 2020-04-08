@@ -5,6 +5,9 @@
 
 import sys, socket
 
+# Whether or not to print the IP address and port of each packet received
+debug=False
+
 def fail(reason):
 	sys.stderr.write(reason + '\n')
 	sys.exit(1)
@@ -31,16 +34,23 @@ except:
 
 knownClient = None
 knownServer = (remoteHost, remotePort)
-sys.stderr.write('All set.\n')
+sys.stdout.write('All set, listening on '+str(localPort)+'.\n')
 while True:
 	data, addr = s.recvfrom(32768)
 	if knownClient is None or addr != knownServer:
-		print("")
+		if debug:
+			print("")
 		knownClient = addr
-	print("Connection received from "+str(addr))
+
+	if debug:
+		print("Packet received from "+str(addr))
+
 	if addr == knownClient:
-		print("\tsending to "+str(knownServer)) 
+		if debug:
+			print("\tforwording tO "+str(knownServer)) 
+
 		s.sendto(data, knownServer)
 	else:
-		print("\tsending to "+str(knownClient))
+		if debug:
+			print("\tforwarding to "+str(knownClient))
 		s.sendto(data, knownClient)
