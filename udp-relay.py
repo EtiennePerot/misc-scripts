@@ -34,9 +34,13 @@ knownServer = (remoteHost, remotePort)
 sys.stderr.write('All set.\n')
 while True:
 	data, addr = s.recvfrom(32768)
-	if knownClient is None:
+	if knownClient is None or addr != knownServer:
+		print("")
 		knownClient = addr
+	print("Connection received from "+str(addr))
 	if addr == knownClient:
+		print("\tsending to "+str(knownServer)) 
 		s.sendto(data, knownServer)
 	else:
+		print("\tsending to "+str(knownClient))
 		s.sendto(data, knownClient)
